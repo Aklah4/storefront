@@ -1,0 +1,1631 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Manuel's Emporium — Luxury Hair &amp; Skin Care</title>
+  <meta name="description" content="Manuel's Emporium — Rare formulas. Refined care. Luxury hair, skin, and beauty rituals crafted for those who honour the art of self-care." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      /* ── Manuel's Emporium Brand Palette ──────────────────── */
+      --cream:      #f4ede0;   /* warm champagne ivory */
+      --warm-white: #fdfcf8;   /* pure warm white */
+      --dark:       #0d0b08;   /* rich near-black */
+      --brown:      #5c3f2a;   /* deep mahogany */
+      --gold:       #c5a05a;   /* warm editorial gold */
+      --gold-light: #e8d4a8;   /* champagne highlight */
+      --text-muted: #8a7968;   /* warm mid-tone */
+      --border:     #ddd0bc;   /* refined warm border */
+      --champagne:  #e8d4a8;   /* alias for gold-light */
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--warm-white);
+      color: var(--dark);
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 300;
+      overflow-x: hidden;
+    }
+
+    /* ── NAV ─────────────────────────────────────────────────────────────── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.4rem 4rem;
+      background: rgba(250,248,244,0.9);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.4rem;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      color: var(--dark);
+      cursor: pointer;
+    }
+
+    .nav-logo span { color: var(--gold); }
+
+    .nav-links { display: flex; gap: 2.4rem; list-style: none; }
+
+    .nav-links a {
+      text-decoration: none;
+      font-size: 0.78rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover { color: var(--dark); }
+
+    .nav-cta {
+      background: var(--dark);
+      color: var(--cream) !important;
+      padding: 0.55rem 1.4rem;
+      border-radius: 2px;
+    }
+
+    .nav-cta:hover { background: var(--brown) !important; }
+
+    .currency-picker {
+      background: transparent;
+      border: 1px solid var(--border);
+      border-radius: 2px;
+      padding: 0.3rem 0.5rem;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.72rem;
+      letter-spacing: 0.06em;
+      color: var(--text-muted);
+      cursor: pointer;
+      outline: none;
+      transition: border-color 0.2s, color 0.2s;
+    }
+
+    .currency-picker:hover,
+    .currency-picker:focus { border-color: var(--dark); color: var(--dark); }
+
+    .currency-picker option { background: var(--warm-white); color: var(--dark); }
+
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 4px;
+    }
+
+    .hamburger span {
+      display: block;
+      width: 22px;
+      height: 1.5px;
+      background: var(--dark);
+    }
+
+    /* ── MOBILE MENU ─────────────────────────────────────────────────────── */
+    .mobile-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 200;
+      background: var(--warm-white);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .mobile-close {
+      position: absolute;
+      top: 1.5rem; right: 2rem;
+      background: none;
+      border: none;
+      font-size: 1.4rem;
+      cursor: pointer;
+      color: var(--text-muted);
+    }
+
+    .mobile-links {
+      list-style: none;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+    }
+
+    .mobile-links a {
+      text-decoration: none;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2.2rem;
+      color: var(--dark);
+      cursor: pointer;
+    }
+
+    .mobile-links a:hover { color: var(--brown); }
+
+    /* ── HERO ────────────────────────────────────────────────────────────── */
+    .hero {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      padding-top: 80px;
+    }
+
+    .hero-left {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 6rem 4rem 6rem 6rem;
+    }
+
+    .hero-tag {
+      display: inline-block;
+      font-size: 0.7rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gold);
+      border: 1px solid var(--gold-light);
+      padding: 0.35rem 0.9rem;
+      border-radius: 2px;
+      margin-bottom: 2rem;
+      width: fit-content;
+    }
+
+    .hero-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(3.2rem, 5vw, 5.5rem);
+      font-weight: 300;
+      line-height: 1.05;
+      color: var(--dark);
+      margin-bottom: 1.8rem;
+    }
+
+    .hero-title em { font-style: italic; color: var(--brown); }
+
+    .hero-sub {
+      font-size: 0.95rem;
+      line-height: 1.8;
+      color: var(--text-muted);
+      max-width: 420px;
+      margin-bottom: 3rem;
+    }
+
+    .hero-btns { display: flex; gap: 1rem; align-items: center; }
+
+    .btn-primary {
+      background: var(--dark);
+      color: var(--cream);
+      padding: 0.9rem 2.2rem;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.78rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      border: none;
+      border-radius: 2px;
+      cursor: pointer;
+      transition: background 0.25s;
+    }
+
+    .btn-primary:hover { background: var(--brown); }
+
+    .btn-secondary {
+      background: transparent;
+      color: var(--dark);
+      padding: 0.9rem 2.2rem;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.78rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      border: 1.5px solid var(--border);
+      border-radius: 2px;
+      cursor: pointer;
+      transition: border-color 0.25s;
+    }
+
+    .btn-secondary:hover { border-color: var(--dark); }
+
+    .hero-right {
+      background: var(--cream);
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 4rem;
+      gap: 1.5rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-right::before {
+      content: '';
+      position: absolute;
+      top: -60px; right: -60px;
+      width: 300px; height: 300px;
+      background: radial-gradient(circle, var(--gold-light) 0%, transparent 70%);
+      opacity: 0.6;
+      border-radius: 50%;
+    }
+
+    .hero-badge {
+      position: absolute;
+      top: 40%; right: 5%;
+      background: var(--dark);
+      color: var(--gold);
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 0.85rem;
+      font-style: italic;
+      border-radius: 50%;
+      width: 100px; height: 100px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      line-height: 1.3;
+    }
+
+    .hero-stats {
+      display: flex;
+      gap: 3rem;
+      padding-top: 2rem;
+      border-top: 1px solid var(--border);
+    }
+
+    .hero-stat { display: flex; flex-direction: column; }
+
+    .hero-stat-num {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2.8rem;
+      font-weight: 300;
+      color: var(--dark);
+      line-height: 1;
+    }
+
+    .hero-stat-label {
+      font-size: 0.72rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-top: 0.3rem;
+    }
+
+    /* ── MARQUEE ─────────────────────────────────────────────────────────── */
+    .marquee-wrap {
+      overflow: hidden;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      padding: 1rem 0;
+      background: var(--cream);
+    }
+
+    .marquee-track {
+      display: flex;
+      gap: 3rem;
+      animation: marquee 22s linear infinite;
+      width: max-content;
+    }
+
+    @keyframes marquee {
+      from { transform: translateX(0); }
+      to   { transform: translateX(-50%); }
+    }
+
+    .marquee-item {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1rem;
+      font-style: italic;
+      color: var(--text-muted);
+      white-space: nowrap;
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+    }
+
+    .marquee-dot {
+      width: 4px; height: 4px;
+      background: var(--gold);
+      border-radius: 50%;
+      display: inline-block;
+    }
+
+    /* ── SECTION COMMON ──────────────────────────────────────────────────── */
+    .section-label {
+      font-size: 0.7rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 0.8rem;
+    }
+
+    .section-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2rem, 3vw, 3rem);
+      font-weight: 300;
+      line-height: 1.15;
+      color: var(--dark);
+    }
+
+    .section-title em { font-style: italic; color: var(--brown); }
+
+    /* ── SHOP ────────────────────────────────────────────────────────────── */
+    .shop-section { padding: 7rem 5rem; }
+
+    .section-header {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      margin-bottom: 2rem;
+    }
+
+    .section-desc {
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      max-width: 300px;
+      text-align: right;
+      line-height: 1.7;
+    }
+
+    .filter-tabs {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 2.5rem;
+    }
+
+    .filter-tab {
+      background: none;
+      border: 1px solid var(--border);
+      border-radius: 2px;
+      padding: 0.45rem 1.1rem;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.72rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: border-color 0.2s, color 0.2s, background 0.2s;
+    }
+
+    .filter-tab:hover { border-color: var(--gold); color: var(--dark); }
+
+    .filter-tab.active {
+      background: var(--dark);
+      border-color: var(--dark);
+      color: var(--cream);
+    }
+
+    .product-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+    }
+
+    .product-card {
+      background: var(--cream);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      overflow: hidden;
+      aspect-ratio: 3/4;
+      transition: transform 0.3s, box-shadow 0.3s, border-color 0.3s;
+      position: relative;
+    }
+
+    .product-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 16px 40px rgba(26,22,17,0.1);
+      border-color: var(--gold-light);
+    }
+
+    .product-card.skeleton {
+      background: linear-gradient(90deg, var(--cream) 25%, var(--border) 50%, var(--cream) 75%);
+      background-size: 200% 100%;
+      animation: shimmer 1.4s infinite;
+      border: none;
+    }
+
+    @keyframes shimmer {
+      0%   { background-position: 200% 0; }
+      100% { background-position: -200% 0; }
+    }
+
+    .card-empty {
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 0.6rem;
+      padding: 2rem;
+      text-align: center;
+    }
+
+    .placeholder-icon { color: var(--gold-light); margin-bottom: 0.5rem; }
+
+    .placeholder-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.1rem;
+      color: var(--text-muted);
+      font-weight: 400;
+    }
+
+    .placeholder-cat {
+      font-size: 0.65rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--gold-light);
+    }
+
+    .placeholder-desc {
+      font-size: 0.78rem;
+      color: var(--border);
+      line-height: 1.5;
+      max-width: 160px;
+      margin-top: 0.3rem;
+    }
+
+    .placeholder-price {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1rem;
+      color: var(--gold);
+      margin-top: 0.5rem;
+    }
+
+    .placeholder-btn {
+      margin-top: 0.8rem;
+      background: var(--dark);
+      color: var(--cream);
+      border: none;
+      border-radius: 2px;
+      padding: 0.45rem 1rem;
+      font-size: 0.68rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      cursor: pointer;
+      font-family: 'DM Sans', sans-serif;
+      transition: background 0.2s;
+    }
+
+    .placeholder-btn:hover { background: var(--brown); }
+
+    .card-image-wrap { position: relative; height: 100%; }
+
+    .card-img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+    .card-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(26,22,17,0.88) 0%, transparent 55%);
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 1.6rem;
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    .product-card:hover .card-overlay { opacity: 1; }
+
+    .card-category {
+      font-size: 0.65rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 0.3rem;
+    }
+
+    .card-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.5rem;
+      font-weight: 300;
+      color: #fff;
+      margin-bottom: 0.4rem;
+    }
+
+    .card-price {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.05rem;
+      color: var(--gold-light);
+      margin-bottom: 0.9rem;
+    }
+
+    .card-actions { display: flex; gap: 0.7rem; }
+
+    .btn-shop {
+      background: var(--gold);
+      color: var(--dark);
+      padding: 0.5rem 1.1rem;
+      font-size: 0.7rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      border: none;
+      border-radius: 2px;
+      cursor: pointer;
+      font-family: 'DM Sans', sans-serif;
+      transition: background 0.2s;
+    }
+
+    .btn-shop:hover { background: var(--gold-light); }
+
+    /* ── ABOUT ───────────────────────────────────────────────────────────── */
+    .about-section {
+      background: var(--dark);
+      padding: 8rem 5rem;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 7rem;
+      align-items: center;
+    }
+
+    .about-label {
+      font-size: 0.7rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 1.2rem;
+    }
+
+    .about-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2.4rem, 3.5vw, 3.8rem);
+      font-weight: 300;
+      line-height: 1.1;
+      color: var(--cream);
+      margin-bottom: 2rem;
+    }
+
+    .about-title em { font-style: italic; color: var(--gold); }
+
+    .about-body {
+      font-size: 0.9rem;
+      line-height: 1.9;
+      color: rgba(245,240,232,0.6);
+      margin-bottom: 1.4rem;
+      max-width: 480px;
+    }
+
+    .about-values {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+      margin-top: 3rem;
+    }
+
+    .about-value {
+      border-top: 1px solid rgba(201,169,110,0.3);
+      padding-top: 1rem;
+    }
+
+    .about-value-num {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2rem;
+      font-weight: 300;
+      color: var(--gold);
+      line-height: 1;
+    }
+
+    .about-value-label {
+      font-size: 0.72rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: rgba(245,240,232,0.4);
+      margin-top: 0.3rem;
+    }
+
+    .about-right {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .about-img-placeholder {
+      aspect-ratio: 4/5;
+      background: rgba(245,240,232,0.05);
+      border: 1px solid rgba(245,240,232,0.1);
+      border-radius: 4px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 0.8rem;
+      color: rgba(245,240,232,0.2);
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 0.85rem;
+      font-style: italic;
+    }
+
+    .about-img-placeholder svg { opacity: 0.3; }
+
+    .about-quote {
+      background: rgba(201,169,110,0.08);
+      border-left: 2px solid var(--gold);
+      padding: 1.2rem 1.5rem;
+      border-radius: 0 3px 3px 0;
+    }
+
+    .about-quote p {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.05rem;
+      font-style: italic;
+      color: var(--gold-light);
+      line-height: 1.6;
+    }
+
+    .about-quote cite {
+      display: block;
+      font-size: 0.7rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: rgba(245,240,232,0.3);
+      margin-top: 0.6rem;
+      font-style: normal;
+    }
+
+    /* ── PHILOSOPHY ──────────────────────────────────────────────────────── */
+    .philosophy {
+      background: var(--cream);
+      padding: 6rem 5rem;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6rem;
+      align-items: center;
+    }
+
+    .philosophy-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2rem, 3vw, 3.2rem);
+      font-weight: 300;
+      color: var(--dark);
+      line-height: 1.2;
+    }
+
+    .philosophy-title em { font-style: italic; color: var(--brown); }
+
+    .philosophy-right { display: flex; flex-direction: column; gap: 2rem; }
+
+    .philosophy-point { border-left: 2px solid var(--gold); padding-left: 1.5rem; }
+
+    .philosophy-point h4 {
+      font-size: 0.8rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--brown);
+      margin-bottom: 0.5rem;
+    }
+
+    .philosophy-point p {
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      line-height: 1.7;
+    }
+
+    /* ── JOURNAL ─────────────────────────────────────────────────────────── */
+    .journal-section {
+      background: var(--warm-white);
+      padding: 7rem 5rem;
+    }
+
+    .journal-header {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      margin-bottom: 3.5rem;
+    }
+
+    .journal-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2rem;
+    }
+
+    .journal-card {
+      background: var(--cream);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+
+    .journal-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 12px 32px rgba(26,22,17,0.08);
+    }
+
+    .journal-img {
+      aspect-ratio: 16/9;
+      background: var(--border);
+      overflow: hidden;
+      position: relative;
+    }
+
+    .journal-img img { width: 100%; height: 100%; object-fit: cover; }
+
+    .journal-img-placeholder {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--gold-light);
+      background: linear-gradient(135deg, var(--cream) 0%, var(--border) 100%);
+    }
+
+    .journal-body { padding: 1.5rem; flex: 1; display: flex; flex-direction: column; }
+
+    .journal-cat {
+      font-size: 0.65rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 0.6rem;
+    }
+
+    .journal-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.25rem;
+      font-weight: 400;
+      color: var(--dark);
+      line-height: 1.3;
+      margin-bottom: 0.8rem;
+    }
+
+    .journal-excerpt {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      line-height: 1.7;
+      flex: 1;
+    }
+
+    .journal-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 1.2rem;
+      padding-top: 1rem;
+      border-top: 1px solid var(--border);
+    }
+
+    .journal-date {
+      font-size: 0.7rem;
+      letter-spacing: 0.06em;
+      color: var(--text-muted);
+    }
+
+    .journal-read {
+      font-size: 0.7rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--gold);
+      text-decoration: none;
+      cursor: pointer;
+      border: none;
+      background: none;
+      font-family: 'DM Sans', sans-serif;
+      transition: color 0.2s;
+    }
+
+    .journal-read:hover { color: var(--brown); }
+
+    .journal-card.skeleton {
+      background: linear-gradient(90deg, var(--cream) 25%, var(--border) 50%, var(--cream) 75%);
+      background-size: 200% 100%;
+      animation: shimmer 1.4s infinite;
+      min-height: 280px;
+      border: none;
+    }
+
+    /* ── CONTACT ─────────────────────────────────────────────────────────── */
+    .contact-section {
+      background: var(--dark);
+      padding: 8rem 5rem;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 7rem;
+      align-items: start;
+    }
+
+    .contact-label {
+      font-size: 0.7rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 1.2rem;
+    }
+
+    .contact-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2.4rem, 3.5vw, 3.8rem);
+      font-weight: 300;
+      line-height: 1.1;
+      color: var(--cream);
+      margin-bottom: 1.5rem;
+    }
+
+    .contact-title em { font-style: italic; color: var(--gold); }
+
+    .contact-body {
+      font-size: 0.88rem;
+      line-height: 1.8;
+      color: rgba(245,240,232,0.55);
+      margin-bottom: 2.5rem;
+      max-width: 380px;
+    }
+
+    .contact-info-item {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 1.2rem;
+      font-size: 0.85rem;
+      color: rgba(245,240,232,0.6);
+    }
+
+    .contact-info-icon {
+      width: 36px; height: 36px;
+      background: rgba(201,169,110,0.1);
+      border: 1px solid rgba(201,169,110,0.2);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.85rem;
+      flex-shrink: 0;
+    }
+
+    .contact-form-wrap { display: flex; flex-direction: column; gap: 1rem; }
+
+    .form-field { display: flex; flex-direction: column; gap: 0.45rem; }
+
+    .form-field label {
+      font-size: 0.65rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: rgba(245,240,232,0.4);
+    }
+
+    .form-field input,
+    .form-field textarea {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(245,240,232,0.1);
+      border-radius: 3px;
+      padding: 0.75rem 1rem;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.88rem;
+      font-weight: 300;
+      color: var(--cream);
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .form-field input:focus,
+    .form-field textarea:focus { border-color: var(--gold); }
+
+    .form-field input::placeholder,
+    .form-field textarea::placeholder { color: rgba(245,240,232,0.25); }
+
+    .form-field textarea { resize: vertical; min-height: 120px; }
+
+    .contact-form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+
+    .btn-submit {
+      background: var(--gold);
+      color: var(--dark);
+      padding: 0.9rem 2rem;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.78rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      border: none;
+      border-radius: 2px;
+      cursor: pointer;
+      transition: background 0.25s;
+      margin-top: 0.5rem;
+    }
+
+    .btn-submit:hover { background: var(--gold-light); }
+    .btn-submit:disabled { opacity: 0.5; cursor: default; }
+
+    .form-success {
+      background: rgba(110,201,138,0.1);
+      border: 1px solid rgba(110,201,138,0.25);
+      border-radius: 3px;
+      padding: 1rem 1.2rem;
+      font-size: 0.85rem;
+      color: #9de8b5;
+      text-align: center;
+      margin-top: 0.5rem;
+    }
+
+    .form-error-msg {
+      background: rgba(201,110,110,0.1);
+      border: 1px solid rgba(201,110,110,0.25);
+      border-radius: 3px;
+      padding: 0.8rem 1rem;
+      font-size: 0.82rem;
+      color: #e8a0a0;
+      margin-top: 0.3rem;
+    }
+
+    /* ── FOOTER ──────────────────────────────────────────────────────────── */
+    footer {
+      background: var(--cream);
+      border-top: 1px solid var(--border);
+      padding: 3rem 5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .footer-logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: var(--dark);
+    }
+
+    .footer-logo span { color: var(--gold); }
+
+    .footer-links { display: flex; gap: 2rem; list-style: none; }
+
+    .footer-links a {
+      text-decoration: none;
+      font-size: 0.75rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: color 0.2s;
+    }
+
+    .footer-links a:hover { color: var(--dark); }
+
+    .footer-copy {
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      letter-spacing: 0.05em;
+    }
+
+    /* ── RESPONSIVE ──────────────────────────────────────────────────────── */
+    @media (max-width: 1024px) {
+      .about-section { gap: 4rem; }
+      .contact-section { gap: 4rem; }
+    }
+
+    @media (max-width: 900px) {
+      nav { padding: 1.2rem 2rem; }
+      .nav-links { display: none; }
+      .hamburger { display: flex; }
+      .hero { grid-template-columns: 1fr; }
+      .hero-right { min-height: 300px; }
+      .hero-left { padding: 4rem 2rem; }
+      .shop-section { padding: 4rem 2rem; }
+      .product-grid { grid-template-columns: repeat(2, 1fr); gap: 1rem; }
+      .section-header { flex-direction: column; align-items: flex-start; gap: 1rem; }
+      .section-desc { text-align: left; max-width: 100%; }
+      .about-section { grid-template-columns: 1fr; padding: 5rem 2rem; gap: 3rem; }
+      .about-right { display: none; }
+      .philosophy { grid-template-columns: 1fr; padding: 4rem 2rem; gap: 3rem; }
+      .journal-section { padding: 4rem 2rem; }
+      .journal-grid { grid-template-columns: 1fr; gap: 1.5rem; }
+      .journal-header { flex-direction: column; align-items: flex-start; gap: 1rem; }
+      .contact-section { grid-template-columns: 1fr; padding: 5rem 2rem; gap: 3rem; }
+      .contact-form-row { grid-template-columns: 1fr; }
+      footer { flex-direction: column; gap: 1.5rem; text-align: center; padding: 2.5rem 2rem; }
+      .footer-links { flex-wrap: wrap; justify-content: center; }
+    }
+
+    @media (max-width: 560px) {
+      .product-grid { grid-template-columns: 1fr; }
+      .filter-tabs { flex-wrap: wrap; }
+      .about-values { grid-template-columns: 1fr 1fr; }
+      .journal-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+
+  {% raw %}
+  <script type="text/babel">
+    const { useState, useEffect, useCallback, useRef } = React;
+
+    const NAV_LINKS     = ['Shop', 'About', 'Journal', 'Contact'];
+    // BRAND PILLARS — update these to match your final brand voice
+    const MARQUEE_ITEMS = ['Ritual Care', 'Hair Oils &amp; Treatments', 'Raw Hair Bundles', 'Luxury Skincare', 'Hair Accessories &amp; Adornment', 'Wigs &amp; Extensions', 'Crafted for Queens', 'Serums &amp; Botanicals'];
+
+    // ─── Currency ─────────────────────────────────────────────────────────────
+
+    const CURRENCIES = {
+      USD: { symbol: '$',    label: 'USD ($)',   rate: 1      },
+      GBP: { symbol: '£',    label: 'GBP (£)',   rate: 0.79   },
+      NGN: { symbol: '₦',    label: 'NGN (₦)',   rate: 1620   },
+      CAD: { symbol: 'CA$',  label: 'CAD (CA$)', rate: 1.37   },
+    };
+
+    const CurrencyCtx = React.createContext('USD');
+
+    function formatPrice(usdPrice, currencyKey) {
+      const c = CURRENCIES[currencyKey] || CURRENCIES.USD;
+      const val = parseFloat(usdPrice) * c.rate;
+      if (currencyKey === 'NGN') return c.symbol + Math.round(val).toLocaleString();
+      return c.symbol + val.toFixed(2);
+    }
+
+    function CurrencyPicker({ value, onChange }) {
+      return (
+        <select
+          className="currency-picker"
+          value={value}
+          onChange={e => onChange(e.target.value)}
+          aria-label="Select currency"
+        >
+          {Object.entries(CURRENCIES).map(([key, c]) => (
+            <option key={key} value={key}>{c.label}</option>
+          ))}
+        </select>
+      );
+    }
+
+    // ─── scroll helper ────────────────────────────────────────────────────────
+
+    function scrollTo(id) {
+      document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    // ─── Hooks ────────────────────────────────────────────────────────────────
+
+    function useProducts() {
+      const [products, setProducts] = useState([]);
+      const [loading, setLoading]   = useState(true);
+
+      useEffect(() => {
+        let cancelled = false;
+        fetch('/api/products')
+          .then(r => r.ok ? r.json() : Promise.reject())
+          .then(data => { if (!cancelled) { setProducts(data); setLoading(false); } })
+          .catch(() => { if (!cancelled) setLoading(false); });
+        return () => { cancelled = true; };
+      }, []);
+
+      return { products, loading };
+    }
+
+    function useJournal() {
+      const [posts, setPosts]     = useState([]);
+      const [loading, setLoading] = useState(true);
+
+      useEffect(() => {
+        let cancelled = false;
+        fetch('/api/journal')
+          .then(r => r.ok ? r.json() : Promise.reject())
+          .then(data => { if (!cancelled) { setPosts(data); setLoading(false); } })
+          .catch(() => { if (!cancelled) setLoading(false); });
+        return () => { cancelled = true; };
+      }, []);
+
+      return { posts, loading };
+    }
+
+    // ─── Mobile menu ──────────────────────────────────────────────────────────
+
+    function MobileMenu({ open, onClose }) {
+      useEffect(() => {
+        document.body.style.overflow = open ? 'hidden' : '';
+        return () => { document.body.style.overflow = ''; };
+      }, [open]);
+
+      if (!open) return null;
+
+      const go = (id) => { onClose(); setTimeout(() => scrollTo(id), 100); };
+
+      return (
+        <div className="mobile-overlay" role="dialog" aria-modal="true">
+          <button className="mobile-close" onClick={onClose} aria-label="Close menu">&#x2715;</button>
+          <ul className="mobile-links">
+            {NAV_LINKS.map(l => (
+              <li key={l}>
+                <a onClick={() => go(l.toLowerCase())}>{l}</a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      );
+    }
+
+    // ─── Product card ─────────────────────────────────────────────────────────
+
+    function ProductCard({ product }) {
+      const currency = React.useContext(CurrencyCtx);
+      const price    = product.price ? formatPrice(product.price, currency) : null;
+
+      return (
+        <article className="product-card">
+          {product.image_url ? (
+            <div className="card-image-wrap">
+              <img src={product.image_url} alt={product.name} className="card-img" />
+              <div className="card-overlay" aria-hidden="true">
+                <span className="card-category">{product.category}</span>
+                <h3 className="card-name">{product.name}</h3>
+                {price && <p className="card-price">{price}</p>}
+                <div className="card-actions">
+                  <button className="btn-shop" aria-label={`Discover ${product.name}`}>Discover</button>
+                </div>
+              </div>
+            </div>
+          ) : (
+            <div className="card-empty">
+              <div className="placeholder-icon" aria-hidden="true">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1">
+                  <rect x="3" y="3" width="18" height="18" rx="2" />
+                  <circle cx="8.5" cy="8.5" r="1.5" />
+                  <polyline points="21 15 16 10 5 21" />
+                </svg>
+              </div>
+              <p className="placeholder-name">{product.name}</p>
+              <span className="placeholder-cat">{product.category}</span>
+              {product.description && <p className="placeholder-desc">{product.description}</p>}
+              {price && <span className="placeholder-price">{price}</span>}
+              <button className="placeholder-btn">Discover</button>
+            </div>
+          )}
+        </article>
+      );
+    }
+
+    // ─── Shop section ─────────────────────────────────────────────────────────
+
+    function ShopSection() {
+      const { products, loading } = useProducts();
+      const [activeFilter, setActiveFilter] = useState('All');
+
+      const categories = ['All', ...new Set(products.map(p => p.category))];
+      const filtered   = activeFilter === 'All' ? products : products.filter(p => p.category === activeFilter);
+
+      return (
+        <section id="shop" className="shop-section">
+          <div className="section-header">
+            <div>
+              <p className="section-label">The Collection</p>
+              <h2 className="section-title">Each piece,<br /><em>purposefully made</em></h2>
+            </div>
+            <p className="section-desc">
+              From raw hair bundles to ritual-grade skincare — every product
+              in our collection is chosen with a single standard: excellence.
+            </p>
+          </div>
+
+          {!loading && categories.length > 1 && (
+            <div className="filter-tabs" role="tablist" aria-label="Filter by category">
+              {categories.map(cat => (
+                <button
+                  key={cat}
+                  role="tab"
+                  aria-selected={activeFilter === cat}
+                  className={'filter-tab' + (activeFilter === cat ? ' active' : '')}
+                  onClick={() => setActiveFilter(cat)}
+                >
+                  {cat}
+                </button>
+              ))}
+            </div>
+          )}
+
+          <div className="product-grid">
+            {loading
+              ? Array.from({ length: 6 }, (_, i) => (
+                  <div key={i} className="product-card skeleton" aria-label="Loading" />
+                ))
+              : filtered.map(p => <ProductCard key={p.id} product={p} />)
+            }
+          </div>
+        </section>
+      );
+    }
+
+    // ─── About section ────────────────────────────────────────────────────────
+
+    // ─── About / Brand Story ──────────────────────────────────────────────────
+    // BRAND STORY — update quote and founder attribution with your own voice
+    function AboutSection() {
+      return (
+        <section id="about" className="about-section">
+          <div className="about-left">
+            <p className="about-label">Our Story</p>
+            <h2 className="about-title">
+              Born for women who<br />refuse to <em>settle</em>
+            </h2>
+            <p className="about-body">
+              Manuel's Emporium was built on a single, uncompromising conviction: that every
+              woman deserves access to beauty that is both extraordinary and intentional.
+              Not products you use — rituals you return to.
+            </p>
+            <p className="about-body">
+              We curate the finest raw hair bundles, wigs, and extensions alongside
+              nourishing hair oils, treatments, and luxury skincare — because true beauty
+              is head-to-toe, inside and out. Every piece in our collection is selected
+              with the same question in mind: does this honour her?
+            </p>
+
+            <div className="about-values">
+              <div className="about-value">
+                {/* STAT — update to reflect your actual product range */}
+                <div className="about-value-num">Hair</div>
+                <div className="about-value-label">Wigs, bundles &amp; extensions</div>
+              </div>
+              <div className="about-value">
+                <div className="about-value-num">Skin</div>
+                <div className="about-value-label">Serums, masks &amp; oils</div>
+              </div>
+              <div className="about-value">
+                <div className="about-value-num">Care</div>
+                <div className="about-value-label">Treatments &amp; accessories</div>
+              </div>
+              <div className="about-value">
+                <div className="about-value-num">5&#9733;</div>
+                <div className="about-value-label">Customer rated</div>
+              </div>
+            </div>
+          </div>
+
+          <div className="about-right">
+            {/* IMAGE PLACEHOLDER — replace src with editorial founder/brand photograph */}
+            <div className="about-img-placeholder" aria-hidden="true">
+              <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="0.8">
+                <rect x="3" y="3" width="18" height="18" rx="2" />
+                <circle cx="8.5" cy="8.5" r="1.5" />
+                <polyline points="21 15 16 10 5 21" />
+              </svg>
+              <span>Editorial portrait</span>
+            </div>
+            {/* QUOTE — replace with founder's actual words */}
+            <div className="about-quote">
+              <p>"Beauty is not an afterthought. It is the first act of self-respect."</p>
+              {/* FOUNDER ATTRIBUTION — replace with your name/title */}
+              <cite>— Founder, Manuel's Emporium</cite>
+            </div>
+          </div>
+        </section>
+      );
+    }
+
+    // ─── Philosophy section ───────────────────────────────────────────────────
+
+    function PhilosophySection() {
+      return (
+        <section className="philosophy">
+          <h2 className="philosophy-title">
+            Beauty is a<br /><em>ritual,</em><br />not a routine.
+          </h2>
+          <div className="philosophy-right">
+            <div className="philosophy-point">
+              <h4>Nourish. Restore. Glow.</h4>
+              <p>Our hair oils and treatments are formulated to work with your hair's natural structure — restoring moisture, length, and luminosity without compromise.</p>
+            </div>
+            <div className="philosophy-point">
+              <h4>Crowned with Intention</h4>
+              <p>Every wig, bundle, and extension is sourced to the same standard: raw, premium, and worthy of the woman wearing it.</p>
+            </div>
+            <div className="philosophy-point">
+              <h4>Skin That Remembers</h4>
+              <p>Our skincare line speaks the language of ritual — serums, moisturizers, and cleansers that transform the ordinary into the extraordinary, one application at a time.</p>
+            </div>
+          </div>
+        </section>
+      );
+    }
+
+    // ─── Journal section ──────────────────────────────────────────────────────
+
+    function JournalSection() {
+      const { posts, loading } = useJournal();
+
+      const fmt = (d) => d
+        ? new Date(d).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })
+        : '';
+
+      return (
+        <section id="journal" className="journal-section">
+          <div className="journal-header">
+            <div>
+              <p className="section-label">The Journal</p>
+              <h2 className="section-title">Beauty wisdom &amp;<br /><em>ritual stories</em></h2>
+            </div>
+            <p className="section-desc" style={{textAlign:'right', color:'var(--text-muted)', fontSize:'0.88rem', lineHeight:'1.7', maxWidth:'280px'}}>
+              Expert guidance, ingredient deep-dives, and the art of caring for hair and skin the Manuel's Emporium way.
+            </p>
+          </div>
+
+          <div className="journal-grid">
+            {loading
+              ? Array.from({ length: 3 }, (_, i) => (
+                  <div key={i} className="journal-card skeleton" />
+                ))
+              : posts.length === 0
+                ? (
+                  <div style={{gridColumn:'1/-1', textAlign:'center', padding:'3rem', color:'var(--text-muted)', fontSize:'0.88rem'}}>
+                    The journal is coming soon. Return for beauty wisdom, ritual guides, and more.
+                  </div>
+                )
+                : posts.map(post => (
+                  <article key={post.id} className="journal-card">
+                    <div className="journal-img">
+                      {post.image_url
+                        ? <img src={post.image_url} alt={post.title} />
+                        : (
+                          <div className="journal-img-placeholder" aria-hidden="true">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1">
+                              <rect x="3" y="3" width="18" height="18" rx="2" />
+                              <circle cx="8.5" cy="8.5" r="1.5" />
+                              <polyline points="21 15 16 10 5 21" />
+                            </svg>
+                          </div>
+                        )
+                      }
+                    </div>
+                    <div className="journal-body">
+                      {post.category && <p className="journal-cat">{post.category}</p>}
+                      <h3 className="journal-title">{post.title}</h3>
+                      {post.excerpt && <p className="journal-excerpt">{post.excerpt}</p>}
+                      <div className="journal-footer">
+                        <span className="journal-date">{fmt(post.date)}</span>
+                        <button className="journal-read">Read the Story &#8594;</button>
+                      </div>
+                    </div>
+                  </article>
+                ))
+            }
+          </div>
+        </section>
+      );
+    }
+
+    // ─── Contact section ──────────────────────────────────────────────────────
+
+    function ContactSection() {
+      const blank = { name: '', email: '', message: '' };
+      const [form, setForm]       = useState(blank);
+      const [status, setStatus]   = useState(null); // null | 'sending' | 'ok' | 'error'
+      const [errMsg, setErrMsg]   = useState('');
+
+      const set = (k, v) => setForm(f => ({ ...f, [k]: v }));
+
+      const submit = async (e) => {
+        e.preventDefault();
+        setStatus('sending');
+        setErrMsg('');
+        try {
+          const res = await fetch('/api/contact', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(form),
+          });
+          const data = await res.json();
+          if (!res.ok) { setErrMsg(data.error || 'Something went wrong.'); setStatus('error'); return; }
+          setStatus('ok');
+          setForm(blank);
+        } catch {
+          setErrMsg('Could not send message. Please try again.');
+          setStatus('error');
+        }
+      };
+
+      return (
+        <section id="contact" className="contact-section">
+          <div className="contact-left">
+            <p className="contact-label">Begin the Conversation</p>
+            <h2 className="contact-title">
+              Every great ritual<br />starts with a <em>question</em>
+            </h2>
+            <p className="contact-body">
+              Whether you're seeking guidance on your hair care ritual, curious about
+              a product, or simply want to connect — we are here. Every message is
+              read by a real person who cares.
+            </p>
+
+            {/* CONTACT EMAIL — replace with your brand email */}
+            <div className="contact-info-item">
+              <div className="contact-info-icon">&#9993;</div>
+              <span>hello@lumiereco.com</span>
+            </div>
+            <div className="contact-info-item">
+              <div className="contact-info-icon">&#9742;</div>
+              <span>Mon – Fri, 9am – 6pm</span>
+            </div>
+            <div className="contact-info-item">
+              <div className="contact-info-icon">&#9679;</div>
+              <span>We respond within 24 hours</span>
+            </div>
+          </div>
+
+          <div className="contact-right">
+            {status === 'ok' ? (
+              <div className="form-success">
+                &#10003; &nbsp;Thank you. Your message has been received — we will be in touch shortly.
+              </div>
+            ) : (
+              <form onSubmit={submit} className="contact-form-wrap">
+                <div className="contact-form-row">
+                  <div className="form-field">
+                    <label htmlFor="cf-name">Your Name</label>
+                    <input
+                      id="cf-name"
+                      type="text"
+                      value={form.name}
+                      onChange={e => set('name', e.target.value)}
+                      placeholder="Jane Smith"
+                      required
+                    />
+                  </div>
+                  <div className="form-field">
+                    <label htmlFor="cf-email">Email Address</label>
+                    <input
+                      id="cf-email"
+                      type="email"
+                      value={form.email}
+                      onChange={e => set('email', e.target.value)}
+                      placeholder="jane@example.com"
+                      required
+                    />
+                  </div>
+                </div>
+                <div className="form-field">
+                  <label htmlFor="cf-message">Message</label>
+                  <textarea
+                    id="cf-message"
+                    value={form.message}
+                    onChange={e => set('message', e.target.value)}
+                    placeholder="How can we help you?"
+                    required
+                  />
+                </div>
+                {status === 'error' && <div className="form-error-msg">{errMsg}</div>}
+                <button type="submit" className="btn-submit" disabled={status === 'sending'}>
+                  {status === 'sending' ? 'Sending…' : 'Begin the Conversation'}
+                </button>
+              </form>
+            )}
+          </div>
+        </section>
+      );
+    }
+
+    // ─── App ──────────────────────────────────────────────────────────────────
+
+    function App() {
+      const [menuOpen, setMenuOpen] = useState(false);
+      const [currency, setCurrency] = useState(
+        () => localStorage.getItem('me_currency') || 'USD'
+      );
+
+      const openMenu  = useCallback(() => setMenuOpen(true),  []);
+      const closeMenu = useCallback(() => setMenuOpen(false), []);
+
+      const changeCurrency = (c) => {
+        setCurrency(c);
+        localStorage.setItem('me_currency', c);
+      };
+
+      return (
+        <CurrencyCtx.Provider value={currency}>
+          {/* NAV */}
+          <header>
+            <nav aria-label="Main navigation">
+              <div className="nav-logo" onClick={() => scrollTo('hero')} role="link" tabIndex={0}>
+                Manuel's <span>Emporium</span>
+              </div>
+              <ul className="nav-links">
+                {NAV_LINKS.map(l => (
+                  <li key={l}>
+                    <a
+                      onClick={() => scrollTo(l.toLowerCase())}
+                      className={l === 'Contact' ? 'nav-cta' : ''}
+                    >
+                      {l}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+              <CurrencyPicker value={currency} onChange={changeCurrency} />
+              <button className="hamburger" onClick={openMenu} aria-label="Open menu" aria-expanded={menuOpen}>
+                <span /><span /><span />
+              </button>
+            </nav>
+          </header>
+
+          <MobileMenu open={menuOpen} onClose={closeMenu} />
+
+          {/* HERO */}
+          <section id="hero" className="hero" aria-label="Hero">
+            <div className="hero-left">
+              {/* BRAND TAG — update to match your final tagline */}
+              <span className="hero-tag">Luxury Hair &amp; Skin Rituals</span>
+              <h1 className="hero-title">
+                Where luxury<br />meets the <em>ritual</em><br />of beauty.
+              </h1>
+              <p className="hero-sub">
+                Rare formulas. Refined care. For hair and skin
+                that commands attention — crafted for women who treat
+                self-care as the art it is.
+              </p>
+              <div className="hero-btns">
+                <button className="btn-primary" onClick={() => scrollTo('shop')}>Explore the Collection</button>
+                <button className="btn-secondary" onClick={() => scrollTo('about')}>Our Philosophy</button>
+              </div>
+            </div>
+            <div className="hero-right" aria-hidden="true">
+              <div className="hero-badge">Pure<br />Luxury</div>
+              <div className="hero-stats">
+                <div className="hero-stat">
+                  <span className="hero-stat-num">Hair</span>
+                  <span className="hero-stat-label">Oils &amp; Treatments</span>
+                </div>
+                <div className="hero-stat">
+                  <span className="hero-stat-num">Skin</span>
+                  <span className="hero-stat-label">Serums &amp; Care</span>
+                </div>
+                <div className="hero-stat">
+                  <span className="hero-stat-num">5&#9733;</span>
+                  <span className="hero-stat-label">Rated</span>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          {/* MARQUEE */}
+          <div className="marquee-wrap" aria-hidden="true">
+            <div className="marquee-track">
+              {[...MARQUEE_ITEMS, ...MARQUEE_ITEMS].map((t, i) => (
+                <span className="marquee-item" key={`${t}-${i}`}>
+                  {t} <span className="marquee-dot" />
+                </span>
+              ))}
+            </div>
+          </div>
+
+          <ShopSection />
+          <AboutSection />
+          <PhilosophySection />
+          <JournalSection />
+          <ContactSection />
+
+          {/* FOOTER */}
+          <footer>
+            <div>
+              <div className="footer-logo">Manuel's <span>Emporium</span></div>
+              <p style={{fontSize:'0.72rem', color:'var(--text-muted)', marginTop:'0.4rem', letterSpacing:'0.06em', fontStyle:'italic'}}>
+                Beauty is a ritual. Make it yours.
+              </p>
+            </div>
+            <ul className="footer-links" aria-label="Footer links">
+              {['Privacy', 'Terms', 'Shipping', 'Returns', 'Instagram'].map(l => (
+                <li key={l}><a href="#">{l}</a></li>
+              ))}
+            </ul>
+            <span className="footer-copy">&copy; 2026 Manuel's Emporium. All rights reserved.</span>
+          </footer>
+        </CurrencyCtx.Provider>
+      );
+    }
+
+    ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+  </script>
+  {% endraw %}
+</body>
+</html>

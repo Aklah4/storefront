@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Login — Manuel's Emporium</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --dark:       #1a1611;
+      --darker:     #0f0d0a;
+      --gold:       #c9a96e;
+      --gold-light: #e8d5b0;
+      --cream:      #f5f0e8;
+      --border:     rgba(245,240,232,0.12);
+      --muted:      rgba(245,240,232,0.45);
+    }
+
+    body {
+      background: var(--darker);
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 300;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+    }
+
+    .card {
+      width: 100%;
+      max-width: 400px;
+      background: var(--dark);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 3rem 2.5rem;
+    }
+
+    .logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.4rem;
+      font-weight: 600;
+      color: var(--cream);
+      letter-spacing: 0.04em;
+      text-align: center;
+      margin-bottom: 0.4rem;
+    }
+
+    .logo span { color: var(--gold); }
+
+    .subtitle {
+      font-size: 0.7rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--muted);
+      text-align: center;
+      margin-bottom: 2.5rem;
+    }
+
+    .divider {
+      width: 32px;
+      height: 1px;
+      background: var(--gold);
+      margin: 0 auto 2.5rem;
+      opacity: 0.5;
+    }
+
+    label {
+      display: block;
+      font-size: 0.68rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 0.5rem;
+    }
+
+    input[type="text"],
+    input[type="password"] {
+      width: 100%;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid var(--border);
+      border-radius: 3px;
+      padding: 0.75rem 1rem;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.9rem;
+      font-weight: 300;
+      color: var(--cream);
+      outline: none;
+      transition: border-color 0.2s;
+      margin-bottom: 1.4rem;
+    }
+
+    input[type="text"]:focus,
+    input[type="password"]:focus {
+      border-color: var(--gold);
+    }
+
+    input::placeholder { color: var(--muted); }
+
+    .error {
+      background: rgba(201, 100, 100, 0.12);
+      border: 1px solid rgba(201, 100, 100, 0.3);
+      border-radius: 3px;
+      color: #e8a0a0;
+      font-size: 0.82rem;
+      padding: 0.65rem 0.9rem;
+      margin-bottom: 1.4rem;
+    }
+
+    button[type="submit"] {
+      width: 100%;
+      background: var(--gold);
+      color: var(--dark);
+      border: none;
+      border-radius: 3px;
+      padding: 0.85rem;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.75rem;
+      font-weight: 500;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: background 0.2s;
+      margin-top: 0.4rem;
+    }
+
+    button[type="submit"]:hover { background: var(--gold-light); }
+
+    .back {
+      display: block;
+      text-align: center;
+      margin-top: 1.6rem;
+      font-size: 0.72rem;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .back:hover { color: var(--cream); }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="logo">Manuel's <span>Emporium</span></div>
+    <p class="subtitle">Admin Portal</p>
+    <div class="divider"></div>
+
+    {% if error %}
+      <div class="error">{{ error }}</div>
+    {% endif %}
+
+    <form method="POST" action="/admin/login">
+      <label for="username">Username</label>
+      <input type="text" id="username" name="username" placeholder="admin" autocomplete="username" required />
+
+      <label for="password">Password</label>
+      <input type="password" id="password" name="password" placeholder="••••••••" autocomplete="current-password" required />
+
+      <button type="submit">Sign In</button>
+    </form>
+
+    <a href="/" class="back">&#8592; Back to store</a>
+  </div>
+</body>
+</html>

@@ -1,0 +1,12 @@
+# Environment — never commit real credentials
+.env
+
+# Python
+venv/
+__pycache__/
+*.pyc
+*.pyo
+
+# Dynamic data (ephemeral on Render free tier)
+data/messages.json
+static/uploads/

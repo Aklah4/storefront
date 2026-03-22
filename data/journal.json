@@ -1,0 +1,29 @@
+[
+  {
+    "id": 1,
+    "title": "The Art of the Oil Cleanse",
+    "category": "Skin Care",
+    "excerpt": "Discover why oil cleansing is the ancient ritual that modern skin care finally got right — and how to do it properly.",
+    "body": "",
+    "date": "2026-03-01",
+    "image_url": null
+  },
+  {
+    "id": 2,
+    "title": "Understanding Your Hair Porosity",
+    "category": "Hair Care",
+    "excerpt": "Before choosing any product, know how your strands absorb and retain moisture. It changes everything.",
+    "body": "",
+    "date": "2026-02-18",
+    "image_url": null
+  },
+  {
+    "id": 3,
+    "title": "Cold-Pressed vs. Refined Oils",
+    "category": "Ingredients",
+    "excerpt": "Not all plant oils are created equal. Here's what to look for on every label and why it matters for your skin.",
+    "body": "",
+    "date": "2026-02-05",
+    "image_url": null
+  }
+]

@@ -1,0 +1,11 @@
+services:
+  - type: web
+    name: manuels-emporium
+    runtime: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn app:app
+    envVars:
+      - key: SECRET_KEY
+        generateValue: true      # Render auto-generates a secure value
+      - key: ADMIN_ENABLED
+        value: "false"           # Admin panel is OFF in production

@@ -1,0 +1,56 @@
+[
+  {
+    "id": 1,
+    "name": "Signature Hair Oil",
+    "category": "Hair Care",
+    "price": "34.99",
+    "description": "A luxurious blend of cold-pressed botanicals that nourish and strengthen hair from root to tip. Lightweight yet intensely moisturising.",
+    "image_url": "/static/uploads/653134eac6c64885a3b66ece641c4eb1.webp",
+    "featured": true
+  },
+  {
+    "id": 2,
+    "name": "Brazilin Hair",
+    "category": "Bundles",
+    "price": "510",
+    "description": "",
+    "image_url": "/static/uploads/dd7a730a2f8146dd9283a62e1b1f9c02.jpg",
+    "featured": true
+  },
+  {
+    "id": 3,
+    "name": "curls",
+    "category": "Hair Care",
+    "price": "150",
+    "description": "",
+    "image_url": "/static/uploads/65b25285bc5040889b4e7fdf985c16b8.jpg",
+    "featured": false
+  },
+  {
+    "id": 4,
+    "name": "Classic",
+    "category": "Bundles",
+    "price": "200",
+    "description": "A deep-conditioning mask that melts into skin, leaving it silky, restored and deeply nourished.",
+    "image_url": "/static/uploads/25f934775cb941fc97ecf4f751abc1ad.webp",
+    "featured": true
+  },
+  {
+    "id": 5,
+    "name": "Keratin",
+    "category": "Hair Care",
+    "price": "50",
+    "description": "A targeted treatment that soothes, balances and primes your scalp for healthier, stronger growth.",
+    "image_url": "/static/uploads/f6e78e85c2f2442e9c0caf50d09eb0aa.jpg",
+    "featured": false
+  },
+  {
+    "id": 6,
+    "name": "Dr Melaxin",
+    "category": "Skin Care",
+    "price": "123",
+    "description": "A gentle, alcohol-free toner that preps skin and enhances absorption of your serums and moisturisers.",
+    "image_url": "/static/uploads/1dc48ec7bc3943cea3b660621b0f956c.webp",
+    "featured": false
+  }
+]
