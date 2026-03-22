@@ -5,7 +5,7 @@
     "category": "Hair Care",
     "price": "34.99",
     "description": "A luxurious blend of cold-pressed botanicals that nourish and strengthen hair from root to tip. Lightweight yet intensely moisturising.",
-    "image_url": "/static/uploads/653134eac6c64885a3b66ece641c4eb1.webp",
+    "image_url": "https://res.cloudinary.com/dgnkujeaj/image/upload/v1774221789/manuels-emporium/h5ujuqd7cxluwbvzckmk.webp",
     "featured": true
   },
   {
@@ -14,7 +14,7 @@
     "category": "Bundles",
     "price": "510",
     "description": "",
-    "image_url": "/static/uploads/dd7a730a2f8146dd9283a62e1b1f9c02.jpg",
+    "image_url": "https://res.cloudinary.com/dgnkujeaj/image/upload/v1774221776/manuels-emporium/codxgtv3pgmhraqe4zo0.jpg",
     "featured": true
   },
   {
@@ -23,7 +23,7 @@
     "category": "Hair Care",
     "price": "150",
     "description": "",
-    "image_url": "/static/uploads/65b25285bc5040889b4e7fdf985c16b8.jpg",
+    "image_url": "https://res.cloudinary.com/dgnkujeaj/image/upload/v1774221762/manuels-emporium/doewh67uksncbhwnstlq.jpg",
     "featured": false
   },
   {
@@ -32,7 +32,7 @@
     "category": "Bundles",
     "price": "200",
     "description": "A deep-conditioning mask that melts into skin, leaving it silky, restored and deeply nourished.",
-    "image_url": "/static/uploads/25f934775cb941fc97ecf4f751abc1ad.webp",
+    "image_url": "https://res.cloudinary.com/dgnkujeaj/image/upload/v1774221732/manuels-emporium/sr6awkc5tjlczptttbfz.webp",
     "featured": true
   },
   {
@@ -41,7 +41,7 @@
     "category": "Hair Care",
     "price": "50",
     "description": "A targeted treatment that soothes, balances and primes your scalp for healthier, stronger growth.",
-    "image_url": "/static/uploads/f6e78e85c2f2442e9c0caf50d09eb0aa.jpg",
+    "image_url": "https://res.cloudinary.com/dgnkujeaj/image/upload/v1774221715/manuels-emporium/qec9pxhx25lu1yqxsglm.jpg",
     "featured": false
   },
   {
@@ -50,7 +50,16 @@
     "category": "Skin Care",
     "price": "123",
     "description": "A gentle, alcohol-free toner that preps skin and enhances absorption of your serums and moisturisers.",
-    "image_url": "/static/uploads/1dc48ec7bc3943cea3b660621b0f956c.webp",
+    "image_url": "https://res.cloudinary.com/dgnkujeaj/image/upload/v1774221700/manuels-emporium/nbd5nswdl7yajtzvic3v.webp",
+    "featured": false
+  },
+  {
+    "id": 7,
+    "name": "Rosemary",
+    "category": "Hair Care",
+    "price": "25",
+    "description": "",
+    "image_url": "https://res.cloudinary.com/dgnkujeaj/image/upload/v1774221662/manuels-emporium/kzq5bbpj16lukliwy6k4.jpg",
     "featured": false
   }
 ]
