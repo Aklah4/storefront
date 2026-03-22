@@ -1,9 +1,9 @@
 import os
 import json
-import uuid
 from functools import wraps
 from flask import Flask, render_template, request, session, redirect, url_for, jsonify, abort
-from werkzeug.utils import secure_filename
+import cloudinary
+import cloudinary.uploader
 
 try:
     from dotenv import load_dotenv
@@ -18,12 +18,17 @@ ADMIN_USERNAME = os.environ.get('ADMIN_USERNAME', 'admin')
 ADMIN_PASSWORD = os.environ.get('ADMIN_PASSWORD', '')
 ADMIN_ENABLED  = os.environ.get('ADMIN_ENABLED', 'false').lower() == 'true'
 
+cloudinary.config(
+    cloud_name=os.environ.get('CLOUDINARY_CLOUD_NAME'),
+    api_key=os.environ.get('CLOUDINARY_API_KEY'),
+    api_secret=os.environ.get('CLOUDINARY_API_SECRET'),
+)
+
 DATA_DIR       = os.path.join(os.path.dirname(__file__), 'data')
 PRODUCTS_FILE  = os.path.join(DATA_DIR, 'products.json')
 JOURNAL_FILE   = os.path.join(DATA_DIR, 'journal.json')
 MESSAGES_FILE  = os.path.join(DATA_DIR, 'messages.json')
 
-UPLOAD_FOLDER     = os.path.join(os.path.dirname(__file__), 'static', 'uploads')
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif', 'webp'}
 
 def allowed_file(filename):
@@ -263,11 +268,8 @@ def admin_upload():
     f = request.files['file']
     if f.filename == '' or not allowed_file(f.filename):
         return jsonify({'error': 'Invalid file type. Use PNG, JPG, GIF or WebP.'}), 400
-    ext      = f.filename.rsplit('.', 1)[1].lower()
-    filename = f'{uuid.uuid4().hex}.{ext}'
-    os.makedirs(UPLOAD_FOLDER, exist_ok=True)
-    f.save(os.path.join(UPLOAD_FOLDER, filename))
-    return jsonify({'url': f'/static/uploads/{filename}'}), 201
+    result = cloudinary.uploader.upload(f, folder='manuels-emporium')
+    return jsonify({'url': result['secure_url']}), 201
 
 
 if __name__ == '__main__':
