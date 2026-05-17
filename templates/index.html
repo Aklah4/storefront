@@ -1509,7 +1509,7 @@
       const price    = product.price ? formatPrice(product.price, currency) : null;
 
       return (
-        <article className="product-card">
+        <article className="product-card" onClick={onDiscover} style={{cursor:'pointer'}} role="button" tabIndex={0} aria-label={`Discover ${product.name}`} onKeyDown={e => (e.key === 'Enter' || e.key === ' ') && onDiscover()}>
           {product.image_url ? (
             <div className="card-image-wrap">
               <img src={product.image_url} alt={product.name} className="card-img" />
@@ -1518,7 +1518,7 @@
                 <h3 className="card-name">{product.name}</h3>
                 {price && <p className="card-price">{price}</p>}
                 <div className="card-actions">
-                  <button className="btn-shop" onClick={onDiscover} aria-label={`Discover ${product.name}`}>Discover</button>
+                  <button className="btn-shop" onClick={e => { e.stopPropagation(); onDiscover(); }} aria-label={`Discover ${product.name}`}>Discover</button>
                 </div>
               </div>
             </div>
