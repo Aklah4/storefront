@@ -273,6 +273,37 @@
       border-color: rgba(110,201,138,0.2);
     }
 
+    .tag-orange {
+      background: rgba(201,150,70,0.14);
+      color: #c99246;
+      border-color: rgba(201,150,70,0.25);
+    }
+
+    .tag-red {
+      background: rgba(201,110,110,0.14);
+      color: var(--danger);
+      border-color: rgba(201,110,110,0.25);
+    }
+
+    .tag-blue {
+      background: rgba(100,160,220,0.14);
+      color: #78b4e0;
+      border-color: rgba(100,160,220,0.25);
+    }
+
+    .order-note { font-size: 0.78rem; color: var(--muted); max-width: 180px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+    .status-select {
+      background: var(--panel2);
+      border: 1px solid var(--border);
+      color: var(--cream);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.72rem;
+      padding: 0.3rem 0.5rem;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
     .actions { display: flex; gap: 0.5rem; }
 
     .empty-state {
@@ -671,8 +702,8 @@
     const PRODUCT_CATEGORIES = ['Hair Care', 'Skin Care', 'Body Care', 'Bundles'];
 
     function ProductModal({ initial, onSave, onClose }) {
-      const blank = { name: '', category: 'Hair Care', price: '', description: '', image_url: '', featured: false };
-      const [form, setForm] = useState(initial ? { ...initial, image_url: initial.image_url || '' } : blank);
+      const blank = { name: '', category: 'Hair Care', price: '', description: '', details: '', ingredients: '', how_to_use: '', image_url: '', featured: false };
+      const [form, setForm] = useState(initial ? { ...initial, image_url: initial.image_url || '', details: initial.details || '', ingredients: initial.ingredients || '', how_to_use: initial.how_to_use || '' } : blank);
 
       const set = (k, v) => setForm(f => ({ ...f, [k]: v }));
 
@@ -708,6 +739,18 @@
               <div className="form-row">
                 <label>Description</label>
                 <textarea value={form.description} onChange={e => set('description', e.target.value)} placeholder="Short product description..." />
+              </div>
+              <div className="form-row">
+                <label>Details</label>
+                <textarea value={form.details} onChange={e => set('details', e.target.value)} placeholder="Extended product story or full description..." style={{minHeight: '80px'}} />
+              </div>
+              <div className="form-row">
+                <label>Key Ingredients</label>
+                <textarea value={form.ingredients} onChange={e => set('ingredients', e.target.value)} placeholder="List the key ingredients..." style={{minHeight: '60px'}} />
+              </div>
+              <div className="form-row">
+                <label>How to Use</label>
+                <textarea value={form.how_to_use} onChange={e => set('how_to_use', e.target.value)} placeholder="Application or usage instructions..." style={{minHeight: '60px'}} />
               </div>
               <div className="form-row">
                 <label>Image</label>
@@ -1034,6 +1077,127 @@
       );
     }
 
+    // ─── Orders tab ──────────────────────────────────────────────────────────
+
+    const STATUS_COLORS = {
+      pending:   'tag-orange',
+      confirmed: 'tag-blue',
+      fulfilled: 'tag-green',
+      cancelled: 'tag-red',
+    };
+
+    function OrdersTab({ toast }) {
+      const [orders, setOrders]   = useState([]);
+      const [loading, setLoading] = useState(true);
+
+      const load = () => {
+        apiFetch('/api/admin/orders').then(d => { setOrders(d || []); setLoading(false); });
+      };
+
+      useEffect(load, []);
+
+      const updateStatus = async (id, status) => {
+        await apiFetch(`/api/admin/orders/${id}`, { method: 'PUT', body: JSON.stringify({ status }) });
+        toast(`Order marked as ${status}.`);
+        load();
+      };
+
+      const del = async (id) => {
+        if (!confirm('Remove this order?')) return;
+        await apiFetch(`/api/admin/orders/${id}`, { method: 'DELETE' });
+        toast('Order removed.');
+        load();
+      };
+
+      const pending   = orders.filter(o => o.status === 'pending').length;
+      const fulfilled = orders.filter(o => o.status === 'fulfilled').length;
+
+      return (
+        <>
+          <div className="page-header">
+            <div>
+              <div className="page-title">Orders</div>
+              <div className="page-sub">{orders.length} order{orders.length !== 1 ? 's' : ''} total</div>
+            </div>
+          </div>
+
+          <div className="stats-row">
+            <div className="stat-card">
+              <div className="stat-label">Total Orders</div>
+              <div className="stat-value">{orders.length}</div>
+            </div>
+            <div className="stat-card">
+              <div className="stat-label">Pending</div>
+              <div className="stat-value" style={{color: '#c99246'}}>{pending}</div>
+            </div>
+            <div className="stat-card">
+              <div className="stat-label">Fulfilled</div>
+              <div className="stat-value" style={{color: 'var(--success)'}}>{fulfilled}</div>
+            </div>
+          </div>
+
+          <div className="table-wrap">
+            {loading ? (
+              <div className="empty-state">Loading…</div>
+            ) : orders.length === 0 ? (
+              <div className="empty-state">No orders yet.</div>
+            ) : (
+              <table>
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>Product</th>
+                    <th>Customer</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                    <th>Qty</th>
+                    <th>Status</th>
+                    <th>Date</th>
+                    <th>Note</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {[...orders].reverse().map(o => (
+                    <tr key={o.id}>
+                      <td className="td-muted">#{o.id}</td>
+                      <td>
+                        <div>{o.product_name}</div>
+                        {o.product_price && <div className="td-muted" style={{fontSize:'0.75rem'}}>${o.product_price}</div>}
+                      </td>
+                      <td><strong>{o.customer_name}</strong></td>
+                      <td className="td-muted">{o.customer_email}</td>
+                      <td className="td-muted">{o.customer_phone || '—'}</td>
+                      <td className="td-muted">{o.quantity}</td>
+                      <td>
+                        <select
+                          className="status-select"
+                          value={o.status}
+                          onChange={e => updateStatus(o.id, e.target.value)}
+                        >
+                          <option value="pending">Pending</option>
+                          <option value="confirmed">Confirmed</option>
+                          <option value="fulfilled">Fulfilled</option>
+                          <option value="cancelled">Cancelled</option>
+                        </select>
+                      </td>
+                      <td className="td-muted" style={{fontSize:'0.75rem'}}>{o.created_at}</td>
+                      <td><span className="order-note" title={o.note}>{o.note || '—'}</span></td>
+                      <td>
+                        <div className="actions">
+                          <button className="btn-del" onClick={() => del(o.id)}>Remove</button>
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            )}
+          </div>
+        </>
+      );
+    }
+
     // ─── App ──────────────────────────────────────────────────────────────────
 
     function App() {
@@ -1044,9 +1208,18 @@
         setToast({ msg, type });
       }, []);
 
+      const [pendingCount, setPendingCount] = useState(0);
+
+      useEffect(() => {
+        apiFetch('/api/admin/orders').then(d => {
+          if (d) setPendingCount(d.filter(o => o.status === 'pending').length);
+        });
+      }, [tab]);
+
       const tabs = [
         { id: 'products', label: 'Products',  icon: '◈' },
         { id: 'journal',  label: 'Journal',   icon: '✦' },
+        { id: 'orders',   label: 'Orders',    icon: '◻', badge: pendingCount },
         { id: 'messages', label: 'Messages',  icon: '✉' },
       ];
 
@@ -1061,9 +1234,22 @@
                 key={t.id}
                 className={"nav-item" + (tab === t.id ? " active" : "")}
                 onClick={() => setTab(t.id)}
+                style={{position:'relative'}}
               >
                 <span className="nav-icon">{t.icon}</span>
                 {t.label}
+                {t.badge > 0 && (
+                  <span style={{
+                    marginLeft: 'auto',
+                    background: '#c99246',
+                    color: '#0f0d0a',
+                    fontSize: '0.6rem',
+                    fontWeight: 500,
+                    borderRadius: '20px',
+                    padding: '0.1rem 0.45rem',
+                    lineHeight: 1.4,
+                  }}>{t.badge}</span>
+                )}
               </button>
             ))}
 
@@ -1087,6 +1273,7 @@
           <main className="main">
             {tab === 'products' && <ProductsTab toast={showToast} />}
             {tab === 'journal'  && <JournalTab  toast={showToast} />}
+            {tab === 'orders'   && <OrdersTab   toast={showToast} />}
             {tab === 'messages' && <MessagesTab />}
           </main>
 

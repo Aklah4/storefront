@@ -1,5 +1,6 @@
 import os
 import json
+from datetime import datetime
 from functools import wraps
 from flask import Flask, render_template, request, session, redirect, url_for, jsonify, abort
 import cloudinary
@@ -28,6 +29,7 @@ DATA_DIR       = os.path.join(os.path.dirname(__file__), 'data')
 PRODUCTS_FILE  = os.path.join(DATA_DIR, 'products.json')
 JOURNAL_FILE   = os.path.join(DATA_DIR, 'journal.json')
 MESSAGES_FILE  = os.path.join(DATA_DIR, 'messages.json')
+ORDERS_FILE    = os.path.join(DATA_DIR, 'orders.json')
 
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif', 'webp'}
 
@@ -80,6 +82,42 @@ def api_products():
 @app.route('/api/journal')
 def api_journal():
     return jsonify(load_json(JOURNAL_FILE))
+
+
+@app.route('/api/orders', methods=['POST'])
+def api_place_order():
+    data     = request.json or {}
+    name     = data.get('customer_name', '').strip()
+    email    = data.get('customer_email', '').strip()
+    phone    = data.get('customer_phone', '').strip()
+
+    if not (name and email):
+        return jsonify({'error': 'Name and email are required.'}), 400
+
+    orders = load_json(ORDERS_FILE)
+    new_id = max((o['id'] for o in orders), default=0) + 1
+
+    try:
+        qty = max(1, int(data.get('quantity', 1)))
+    except (TypeError, ValueError):
+        qty = 1
+
+    order = {
+        'id':             new_id,
+        'product_id':     data.get('product_id'),
+        'product_name':   data.get('product_name', '').strip(),
+        'product_price':  data.get('product_price', '').strip(),
+        'customer_name':  name,
+        'customer_email': email,
+        'customer_phone': phone,
+        'quantity':       qty,
+        'note':           data.get('note', '').strip(),
+        'status':         'pending',
+        'created_at':     datetime.utcnow().strftime('%Y-%m-%d %H:%M'),
+    }
+    orders.append(order)
+    save_json(ORDERS_FILE, orders)
+    return jsonify(order), 201
 
 
 @app.route('/api/contact', methods=['POST'])
@@ -155,6 +193,9 @@ def admin_add_product():
         'category':    data.get('category', '').strip(),
         'price':       data.get('price', '').strip(),
         'description': data.get('description', '').strip(),
+        'details':     data.get('details', '').strip(),
+        'ingredients': data.get('ingredients', '').strip(),
+        'how_to_use':  data.get('how_to_use', '').strip(),
         'image_url':   data.get('image_url', None) or None,
         'featured':    bool(data.get('featured', False)),
     }
@@ -175,6 +216,9 @@ def admin_update_product(product_id):
             p['category']    = data.get('category', p['category']).strip()
             p['price']       = data.get('price', p['price']).strip()
             p['description'] = data.get('description', p.get('description', '')).strip()
+            p['details']     = data.get('details', p.get('details', '')).strip()
+            p['ingredients'] = data.get('ingredients', p.get('ingredients', '')).strip()
+            p['how_to_use']  = data.get('how_to_use', p.get('how_to_use', '')).strip()
             p['image_url']   = data.get('image_url', p.get('image_url')) or None
             p['featured']    = bool(data.get('featured', p.get('featured', False)))
             save_json(PRODUCTS_FILE, products)
@@ -247,6 +291,37 @@ def admin_delete_post(post_id):
     posts = load_json(JOURNAL_FILE)
     posts = [p for p in posts if p['id'] != post_id]
     save_json(JOURNAL_FILE, posts)
+    return '', 204
+
+
+# ─── Admin API — Orders ──────────────────────────────────────────────────────
+
+@app.route('/api/admin/orders', methods=['GET'])
+@admin_required
+def admin_get_orders():
+    return jsonify(load_json(ORDERS_FILE))
+
+
+@app.route('/api/admin/orders/<int:order_id>', methods=['PUT'])
+@admin_required
+def admin_update_order(order_id):
+    orders = load_json(ORDERS_FILE)
+    data   = request.json or {}
+    for o in orders:
+        if o['id'] == order_id:
+            if 'status' in data:
+                o['status'] = data['status']
+            save_json(ORDERS_FILE, orders)
+            return jsonify(o)
+    return jsonify({'error': 'Order not found.'}), 404
+
+
+@app.route('/api/admin/orders/<int:order_id>', methods=['DELETE'])
+@admin_required
+def admin_delete_order(order_id):
+    orders = load_json(ORDERS_FILE)
+    orders = [o for o in orders if o['id'] != order_id]
+    save_json(ORDERS_FILE, orders)
     return '', 204
 
 

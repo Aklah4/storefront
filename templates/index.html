@@ -1037,6 +1037,209 @@
       .about-values { grid-template-columns: 1fr 1fr; }
       .journal-grid { grid-template-columns: 1fr; }
     }
+
+    /* ── PRODUCT DETAIL MODAL ────────────────────────────────────────────── */
+    .pdp-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(13,11,8,0.78);
+      z-index: 500;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+      backdrop-filter: blur(4px);
+    }
+
+    .pdp-modal {
+      position: relative;
+      background: var(--warm-white);
+      max-width: 860px;
+      width: 100%;
+      max-height: 92vh;
+      overflow-y: auto;
+      border-radius: 2px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    }
+
+    .pdp-close {
+      position: sticky;
+      top: 1rem;
+      float: right;
+      margin: 1rem 1rem 0 0;
+      background: none;
+      border: 1px solid var(--border);
+      width: 2rem;
+      height: 2rem;
+      border-radius: 50%;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 2;
+      transition: background 0.2s, color 0.2s;
+    }
+
+    .pdp-close:hover { background: var(--border); color: var(--dark); }
+
+    .pdp-inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      clear: both;
+    }
+
+    .pdp-image-wrap { min-height: 400px; }
+
+    .pdp-image { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+    .pdp-content {
+      padding: 2.8rem 2.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.9rem;
+    }
+
+    .pdp-category {
+      font-size: 0.65rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--gold);
+    }
+
+    .pdp-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2.1rem;
+      font-weight: 300;
+      color: var(--dark);
+      line-height: 1.15;
+    }
+
+    .pdp-price {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.4rem;
+      color: var(--brown);
+    }
+
+    .pdp-divider {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 0.3rem 0;
+    }
+
+    .pdp-description {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      line-height: 1.75;
+    }
+
+    .pdp-section { display: flex; flex-direction: column; gap: 0.4rem; }
+
+    .pdp-section-label {
+      font-size: 0.62rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--dark);
+      font-weight: 500;
+    }
+
+    .pdp-section-body {
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      line-height: 1.75;
+      white-space: pre-line;
+    }
+
+    @media (max-width: 680px) {
+      .pdp-inner { grid-template-columns: 1fr; }
+      .pdp-image-wrap { min-height: 260px; max-height: 300px; overflow: hidden; }
+      .pdp-content { padding: 1.8rem 1.5rem; }
+    }
+
+    /* ── ORDER FORM (inside product detail modal) ────────────────────────── */
+    .pdp-order-heading {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.2rem;
+      font-weight: 300;
+      color: var(--dark);
+      margin-bottom: 0.9rem;
+    }
+
+    .pdp-field { display: flex; flex-direction: column; gap: 0.3rem; margin-bottom: 0.75rem; }
+
+    .pdp-field label {
+      font-size: 0.6rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--dark);
+      font-weight: 500;
+    }
+
+    .pdp-field input,
+    .pdp-field textarea {
+      border: 1px solid var(--border);
+      background: transparent;
+      padding: 0.55rem 0.7rem;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.88rem;
+      color: var(--dark);
+      border-radius: 2px;
+      width: 100%;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .pdp-field input:focus,
+    .pdp-field textarea:focus { border-color: var(--gold); }
+
+    .pdp-field textarea { min-height: 56px; resize: vertical; }
+
+    .pdp-field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 0.6rem; }
+
+    .pdp-order-btn {
+      width: 100%;
+      background: var(--dark);
+      color: var(--warm-white);
+      padding: 0.75rem;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.7rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      border: none;
+      border-radius: 2px;
+      cursor: pointer;
+      transition: background 0.2s;
+      margin-top: 0.4rem;
+    }
+
+    .pdp-order-btn:hover:not(:disabled) { background: var(--brown); }
+    .pdp-order-btn:disabled { opacity: 0.55; cursor: not-allowed; }
+
+    .pdp-order-err {
+      color: #b03a2e;
+      font-size: 0.82rem;
+      margin-top: 0.5rem;
+    }
+
+    .pdp-order-success {
+      text-align: center;
+      padding: 1.8rem 0 0.5rem;
+    }
+
+    .pdp-order-success-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.7rem;
+      font-weight: 300;
+      color: var(--brown);
+      margin-bottom: 0.5rem;
+    }
+
+    .pdp-order-success-msg {
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      line-height: 1.7;
+    }
   </style>
 </head>
 <body>
@@ -1149,9 +1352,159 @@
       );
     }
 
+    // ─── Product detail modal ─────────────────────────────────────────────────
+
+    function ProductDetailModal({ product, onClose }) {
+      const currency = React.useContext(CurrencyCtx);
+      const price    = product.price ? formatPrice(product.price, currency) : null;
+
+      const blankOrder = { name: '', email: '', phone: '', quantity: 1, note: '' };
+      const [order,    setOrder]    = useState(blankOrder);
+      const [ordering, setOrdering] = useState(false);
+      const [orderDone, setOrderDone] = useState(false);
+      const [orderErr,  setOrderErr]  = useState('');
+
+      const setField = (k, v) => setOrder(o => ({ ...o, [k]: v }));
+
+      const handleOrder = async (e) => {
+        e.preventDefault();
+        setOrdering(true);
+        setOrderErr('');
+        try {
+          const res = await fetch('/api/orders', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              product_id:     product.id,
+              product_name:   product.name,
+              product_price:  product.price,
+              customer_name:  order.name,
+              customer_email: order.email,
+              customer_phone: order.phone,
+              quantity:       Number(order.quantity) || 1,
+              note:           order.note,
+            }),
+          });
+          const data = await res.json();
+          if (!res.ok) { setOrderErr(data.error || 'Something went wrong.'); }
+          else { setOrderDone(true); }
+        } catch {
+          setOrderErr('Could not connect. Please try again.');
+        }
+        setOrdering(false);
+      };
+
+      useEffect(() => {
+        const prev = document.body.style.overflow;
+        document.body.style.overflow = 'hidden';
+        const onKey = (e) => { if (e.key === 'Escape') onClose(); };
+        document.addEventListener('keydown', onKey);
+        return () => {
+          document.body.style.overflow = prev;
+          document.removeEventListener('keydown', onKey);
+        };
+      }, []);
+
+      return (
+        <div className="pdp-backdrop" onClick={e => e.target === e.currentTarget && onClose()}>
+          <div className="pdp-modal" role="dialog" aria-modal="true" aria-label={product.name}>
+            <button className="pdp-close" onClick={onClose} aria-label="Close">&#x2715;</button>
+            <div className="pdp-inner">
+              {product.image_url && (
+                <div className="pdp-image-wrap">
+                  <img src={product.image_url} alt={product.name} className="pdp-image" />
+                </div>
+              )}
+              <div className="pdp-content" style={!product.image_url ? { gridColumn: '1 / -1' } : {}}>
+                <p className="pdp-category">{product.category}</p>
+                <h2 className="pdp-name">{product.name}</h2>
+                {price && <p className="pdp-price">{price}</p>}
+                {product.description && (
+                  <>
+                    <hr className="pdp-divider" />
+                    <p className="pdp-description">{product.description}</p>
+                  </>
+                )}
+                {product.details && (
+                  <>
+                    <hr className="pdp-divider" />
+                    <div className="pdp-section">
+                      <span className="pdp-section-label">About This Product</span>
+                      <p className="pdp-section-body">{product.details}</p>
+                    </div>
+                  </>
+                )}
+                {product.ingredients && (
+                  <>
+                    <hr className="pdp-divider" />
+                    <div className="pdp-section">
+                      <span className="pdp-section-label">Key Ingredients</span>
+                      <p className="pdp-section-body">{product.ingredients}</p>
+                    </div>
+                  </>
+                )}
+                {product.how_to_use && (
+                  <>
+                    <hr className="pdp-divider" />
+                    <div className="pdp-section">
+                      <span className="pdp-section-label">How to Use</span>
+                      <p className="pdp-section-body">{product.how_to_use}</p>
+                    </div>
+                  </>
+                )}
+
+                <hr className="pdp-divider" />
+
+                {orderDone ? (
+                  <div className="pdp-order-success">
+                    <p className="pdp-order-success-title">Order Placed</p>
+                    <p className="pdp-order-success-msg">
+                      Thank you, {order.name}. We'll reach out to you at <strong>{order.email}</strong>{order.phone ? ` or ${order.phone}` : ''} to confirm your order.
+                    </p>
+                  </div>
+                ) : (
+                  <>
+                    <p className="pdp-order-heading">Place an Order</p>
+                    <form onSubmit={handleOrder}>
+                      <div className="pdp-field">
+                        <label>Full Name *</label>
+                        <input type="text" value={order.name} onChange={e => setField('name', e.target.value)} placeholder="Your full name" required />
+                      </div>
+                      <div className="pdp-field">
+                        <label>Email *</label>
+                        <input type="email" value={order.email} onChange={e => setField('email', e.target.value)} placeholder="your@email.com" required />
+                      </div>
+                      <div className="pdp-field-row">
+                        <div className="pdp-field">
+                          <label>Phone</label>
+                          <input type="tel" value={order.phone} onChange={e => setField('phone', e.target.value)} placeholder="Optional" />
+                        </div>
+                        <div className="pdp-field">
+                          <label>Quantity</label>
+                          <input type="number" value={order.quantity} min="1" onChange={e => setField('quantity', e.target.value)} />
+                        </div>
+                      </div>
+                      <div className="pdp-field">
+                        <label>Note</label>
+                        <textarea value={order.note} onChange={e => setField('note', e.target.value)} placeholder="Any special requests…" />
+                      </div>
+                      <button type="submit" className="pdp-order-btn" disabled={ordering}>
+                        {ordering ? 'Placing Order…' : 'Place Order'}
+                      </button>
+                      {orderErr && <p className="pdp-order-err">{orderErr}</p>}
+                    </form>
+                  </>
+                )}
+              </div>
+            </div>
+          </div>
+        </div>
+      );
+    }
+
     // ─── Product card ─────────────────────────────────────────────────────────
 
-    function ProductCard({ product }) {
+    function ProductCard({ product, onDiscover }) {
       const currency = React.useContext(CurrencyCtx);
       const price    = product.price ? formatPrice(product.price, currency) : null;
 
@@ -1165,7 +1518,7 @@
                 <h3 className="card-name">{product.name}</h3>
                 {price && <p className="card-price">{price}</p>}
                 <div className="card-actions">
-                  <button className="btn-shop" aria-label={`Discover ${product.name}`}>Discover</button>
+                  <button className="btn-shop" onClick={onDiscover} aria-label={`Discover ${product.name}`}>Discover</button>
                 </div>
               </div>
             </div>
@@ -1182,7 +1535,7 @@
               <span className="placeholder-cat">{product.category}</span>
               {product.description && <p className="placeholder-desc">{product.description}</p>}
               {price && <span className="placeholder-price">{price}</span>}
-              <button className="placeholder-btn">Discover</button>
+              <button className="placeholder-btn" onClick={onDiscover}>Discover</button>
             </div>
           )}
         </article>
@@ -1194,6 +1547,7 @@
     function ShopSection() {
       const { products, loading } = useProducts();
       const [activeFilter, setActiveFilter] = useState('All');
+      const [selected, setSelected]         = useState(null);
 
       const categories = ['All', ...new Set(products.map(p => p.category))];
       const filtered   = activeFilter === 'All' ? products : products.filter(p => p.category === activeFilter);
@@ -1232,9 +1586,15 @@
               ? Array.from({ length: 6 }, (_, i) => (
                   <div key={i} className="product-card skeleton" aria-label="Loading" />
                 ))
-              : filtered.map(p => <ProductCard key={p.id} product={p} />)
+              : filtered.map(p => (
+                  <ProductCard key={p.id} product={p} onDiscover={() => setSelected(p)} />
+                ))
             }
           </div>
+
+          {selected && (
+            <ProductDetailModal product={selected} onClose={() => setSelected(null)} />
+          )}
         </section>
       );
     }
