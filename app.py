@@ -131,7 +131,8 @@ def api_contact():
         return jsonify({'error': 'All fields are required.'}), 400
 
     messages = load_json(MESSAGES_FILE)
-    messages.append({'name': name, 'email': email, 'message': message})
+    new_id = max((m.get('id', 0) for m in messages), default=0) + 1
+    messages.append({'id': new_id, 'name': name, 'email': email, 'message': message, 'read': False})
     save_json(MESSAGES_FILE, messages)
     return jsonify({'ok': True}), 200
 
@@ -331,6 +332,29 @@ def admin_delete_order(order_id):
 @admin_required
 def admin_get_messages():
     return jsonify(load_json(MESSAGES_FILE))
+
+
+@app.route('/api/admin/messages/<int:msg_id>', methods=['PUT'])
+@admin_required
+def admin_update_message(msg_id):
+    messages = load_json(MESSAGES_FILE)
+    data = request.json or {}
+    for m in messages:
+        if m.get('id') == msg_id:
+            if 'read' in data:
+                m['read'] = data['read']
+            save_json(MESSAGES_FILE, messages)
+            return jsonify(m)
+    return jsonify({'error': 'Message not found.'}), 404
+
+
+@app.route('/api/admin/messages/<int:msg_id>', methods=['DELETE'])
+@admin_required
+def admin_delete_message(msg_id):
+    messages = load_json(MESSAGES_FILE)
+    messages = [m for m in messages if m.get('id') != msg_id]
+    save_json(MESSAGES_FILE, messages)
+    return '', 204
 
 
 # ─── Admin API — Image Upload ─────────────────────────────────────────────────

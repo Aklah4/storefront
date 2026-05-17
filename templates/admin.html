@@ -597,10 +597,17 @@
       border-radius: 6px;
       padding: 1.2rem 1.4rem;
       margin-bottom: 0.8rem;
+      transition: border-color 0.2s;
+    }
+
+    .message-card.unread {
+      border-color: rgba(201,169,110,0.4);
+      background: rgba(201,169,110,0.04);
     }
 
     .message-meta {
       display: flex;
+      align-items: center;
       gap: 1rem;
       margin-bottom: 0.5rem;
       font-size: 0.75rem;
@@ -609,7 +616,37 @@
 
     .message-meta strong { color: var(--cream); }
 
-    .message-body { font-size: 0.85rem; color: rgba(245,240,232,0.7); line-height: 1.6; }
+    .unread-dot {
+      width: 7px;
+      height: 7px;
+      background: var(--gold);
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    .message-body { font-size: 0.85rem; color: rgba(245,240,232,0.7); line-height: 1.6; margin-bottom: 0.9rem; }
+
+    .message-actions { display: flex; gap: 0.5rem; margin-top: 0.7rem; }
+
+    .btn-reply {
+      background: rgba(201,169,110,0.12);
+      color: var(--gold);
+      border: 1px solid rgba(201,169,110,0.25);
+      border-radius: 3px;
+      padding: 0.32rem 0.8rem;
+      font-size: 0.7rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      cursor: pointer;
+      font-family: 'DM Sans', sans-serif;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      transition: background 0.2s;
+    }
+
+    .btn-reply:hover { background: rgba(201,169,110,0.22); }
 
     @media (max-width: 768px) {
       .sidebar { display: none; }
@@ -1039,20 +1076,50 @@
 
     // ─── Messages tab ─────────────────────────────────────────────────────────
 
-    function MessagesTab() {
+    function MessagesTab({ toast, onUnreadChange }) {
       const [messages, setMessages] = useState([]);
       const [loading, setLoading]   = useState(true);
 
+      const load = () =>
+        apiFetch('/api/admin/messages').then(d => {
+          const list = d || [];
+          setMessages(list);
+          setLoading(false);
+          if (onUnreadChange) onUnreadChange(list.filter(m => !m.read).length);
+        });
+
       useEffect(() => {
-        apiFetch('/api/admin/messages').then(d => { setMessages(d || []); setLoading(false); });
+        load();
       }, []);
+
+      // Mark all unread as read when tab opens
+      useEffect(() => {
+        if (!loading && messages.length) {
+          messages.forEach(m => {
+            if (!m.read && m.id != null) {
+              apiFetch(`/api/admin/messages/${m.id}`, { method: 'PUT', body: JSON.stringify({ read: true }) });
+            }
+          });
+          setMessages(prev => prev.map(m => ({ ...m, read: true })));
+          if (onUnreadChange) onUnreadChange(0);
+        }
+      }, [loading]);
+
+      const del = async (id) => {
+        if (!confirm('Delete this message?')) return;
+        await apiFetch(`/api/admin/messages/${id}`, { method: 'DELETE' });
+        toast('Message deleted.');
+        load();
+      };
+
+      const unread = messages.filter(m => !m.read).length;
 
       return (
         <>
           <div className="page-header">
             <div>
               <div className="page-title">Messages</div>
-              <div className="page-sub">{messages.length} contact submission{messages.length !== 1 ? 's' : ''}</div>
+              <div className="page-sub">{messages.length} contact submission{messages.length !== 1 ? 's' : ''}{unread > 0 ? ` · ${unread} unread` : ''}</div>
             </div>
           </div>
 
@@ -1064,12 +1131,24 @@
             </div>
           ) : (
             [...messages].reverse().map((m, i) => (
-              <div className="message-card" key={i}>
+              <div className={"message-card" + (!m.read ? ' unread' : '')} key={m.id ?? i}>
                 <div className="message-meta">
+                  {!m.read && <span className="unread-dot" title="Unread" />}
                   <span><strong>{m.name}</strong></span>
                   <span>{m.email}</span>
                 </div>
                 <div className="message-body">{m.message}</div>
+                <div className="message-actions">
+                  <a
+                    className="btn-reply"
+                    href={`mailto:${m.email}?subject=Re: Your message to Manuel's Emporium&body=Hi ${encodeURIComponent(m.name)},%0A%0A`}
+                  >
+                    ↩ Reply
+                  </a>
+                  {m.id != null && (
+                    <button className="btn-del" onClick={() => del(m.id)}>Delete</button>
+                  )}
+                </div>
               </div>
             ))
           )}
@@ -1208,11 +1287,15 @@
         setToast({ msg, type });
       }, []);
 
-      const [pendingCount, setPendingCount] = useState(0);
+      const [pendingCount,  setPendingCount]  = useState(0);
+      const [unreadCount,   setUnreadCount]   = useState(0);
 
       useEffect(() => {
         apiFetch('/api/admin/orders').then(d => {
           if (d) setPendingCount(d.filter(o => o.status === 'pending').length);
+        });
+        apiFetch('/api/admin/messages').then(d => {
+          if (d) setUnreadCount(d.filter(m => !m.read).length);
         });
       }, [tab]);
 
@@ -1220,7 +1303,7 @@
         { id: 'products', label: 'Products',  icon: '◈' },
         { id: 'journal',  label: 'Journal',   icon: '✦' },
         { id: 'orders',   label: 'Orders',    icon: '◻', badge: pendingCount },
-        { id: 'messages', label: 'Messages',  icon: '✉' },
+        { id: 'messages', label: 'Messages',  icon: '✉', badge: unreadCount },
       ];
 
       return (
@@ -1274,7 +1357,7 @@
             {tab === 'products' && <ProductsTab toast={showToast} />}
             {tab === 'journal'  && <JournalTab  toast={showToast} />}
             {tab === 'orders'   && <OrdersTab   toast={showToast} />}
-            {tab === 'messages' && <MessagesTab />}
+            {tab === 'messages' && <MessagesTab toast={showToast} onUnreadChange={setUnreadCount} />}
           </main>
 
           {toast && (
