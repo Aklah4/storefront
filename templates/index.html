@@ -1251,7 +1251,7 @@
 
     const NAV_LINKS     = ['Shop', 'About', 'Journal', 'Contact'];
     // BRAND PILLARS — update these to match your final brand voice
-    const MARQUEE_ITEMS = ['Ritual Care', 'Hair Oils &amp; Treatments', 'Raw Hair Bundles', 'Luxury Skincare', 'Hair Accessories &amp; Adornment', 'Wigs &amp; Extensions', 'Crafted for Queens', 'Serums &amp; Botanicals'];
+    const MARQUEE_ITEMS = ['Ritual Care', 'Hair Oils & Treatments', 'Raw Hair Bundles', 'Luxury Skincare', 'Hair Accessories & Adornment', 'Wigs & Extensions', 'Crafted for Queens', 'Serums & Botanicals'];
 
     // ─── Currency ─────────────────────────────────────────────────────────────
 
@@ -1403,7 +1403,7 @@
           document.body.style.overflow = prev;
           document.removeEventListener('keydown', onKey);
         };
-      }, []);
+      }, [onClose]);
 
       return (
         <div className="pdp-backdrop" onClick={e => e.target === e.currentTarget && onClose()}>
